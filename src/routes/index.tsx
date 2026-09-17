@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import installation from "@/assets/lichtung-installation.jpg";
 import nora from "@/assets/nora-vahle.jpg";
 import tomas from "@/assets/tomas-berge.jpg";
@@ -31,10 +34,16 @@ const artists = [
 ];
 
 const events = [
-  ["SA 23.11. · 15 UHR", "Kuratorenführung", "Rundgang durch „Stille Verschiebung“ mit Jens Ohlendorf."],
-  ["DO 05.12. · 19 UHR", "Künstlergespräch mit Nora Vahle", "Im Gespräch mit der Kunsthistorikerin Petra Lindqvist."],
-  ["SO 08.12. · 11–14 UHR", "Werkstatt für Kinder", "Farbe und Raum — eigenes Gestalten für Kinder von 6 bis 10 Jahren."],
-  ["JEDEN 1. MITTWOCH", "Offenes Atelier für Jugendliche", "Freies Arbeiten mit Materialien des Vereins, kostenfrei."],
+  { day: "23", month: "NOV", time: "SA · 15 UHR", title: "Kuratorenführung", text: "Rundgang durch „Stille Verschiebung“ mit Jens Ohlendorf.", type: "Führung" },
+  { day: "05", month: "DEZ", time: "DO · 19 UHR", title: "Künstlergespräch mit Nora Vahle", text: "Im Gespräch mit der Kunsthistorikerin Petra Lindqvist.", type: "Gespräch" },
+  { day: "08", month: "DEZ", time: "SO · 11–14 UHR", title: "Werkstatt für Kinder", text: "Farbe und Raum — eigenes Gestalten für Kinder von 6 bis 10 Jahren.", type: "Werkstatt" },
+  { day: "01", month: "MI", time: "JEDEN 1. MITTWOCH", title: "Offenes Atelier für Jugendliche", text: "Freies Arbeiten mit Materialien des Vereins, kostenfrei.", type: "Offenes Atelier" },
+];
+
+const slides = [
+  { image: installation, alt: "Lichtinstallation mit transparenten Farbflächen in einer Galerie", type: "Aktuelle Ausstellung", date: "bis 14. Dezember", title: "Stille Verschiebung", detail: "Nora Vahle · Malerei und Raum", href: "#ausstellungen" },
+  { image: nora, alt: "Künstlerin Nora Vahle in ihrem Atelier", type: "Künstlergespräch", date: "5. Dezember · 19 Uhr", title: "Im Gespräch mit Nora Vahle", detail: "Moderation: Petra Lindqvist", href: "#veranstaltungen" },
+  { image: tomas, alt: "Fotograf Tomas Berge in seinem Atelier", type: "Nächste Ausstellung", date: "18. Januar – 2. März", title: "Nachbilder", detail: "Tomas Berge & Ines Kral · Fotografie", href: "#ausstellungen" },
 ];
 
 function Index() {
@@ -49,7 +58,7 @@ function Index() {
           <a href="#top" className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></a>
           <nav className="hidden items-center gap-6 lg:flex" aria-label="Hauptnavigation">
             <a href="#ausstellungen">Ausstellungen</a><a href="#kuenstler">Künstler:innen</a>
-            <a href="#programm">Programm</a><a href="#verein">Verein</a><a href="#besuch">Besuch</a>
+             <a href="#veranstaltungen">Veranstaltungen</a><a href="#verein">Verein</a><a href="#besuch">Besuch</a>
           </nav>
           <a href="#mitgliedschaft" className="button button-dark">Mitglied werden</a>
         </div>
@@ -64,15 +73,12 @@ function Index() {
                 <div className="eyebrow"><span /> Aktuell · bis 14. Dezember</div>
                 <h1 className="mt-6 text-5xl leading-[.95] font-black sm:text-6xl lg:text-7xl">Ein Ort, der<br />sich <em>öffnet.</em></h1>
                 <p className="mt-6 max-w-lg font-serif text-lg leading-relaxed text-ink-muted">Zeitgenössische Kunst, gezeigt und vermittelt von einem gemeinnützigen Verein — getragen von seinen Mitgliedern, offen für alle.</p>
-                <div className="mt-8 flex flex-wrap gap-3"><a className="button button-dark" href="#ausstellungen">Ausstellungen ansehen</a><a className="button button-light" href="#programm">Programm entdecken</a></div>
+                 <div className="mt-8 flex flex-wrap gap-3"><a className="button button-dark" href="#ausstellungen">Ausstellungen ansehen</a><a className="button button-light" href="#veranstaltungen">Veranstaltungen entdecken</a></div>
                 <div className="mt-10 grid max-w-md grid-cols-3 gap-5 border-t border-line pt-5 font-display">
-                  <div><strong>1978</strong><small>gegründet</small></div><div><strong>340</strong><small>Mitglieder</small></div><div><strong>4</strong><small>Schauen / Jahr</small></div>
+                   <div><strong>1978</strong><small>gegründet</small></div><div><strong>340</strong><small>Mitglieder</small></div><div><strong>4</strong><small>Ausstellungen / Jahr</small></div>
                 </div>
               </div>
-              <div className="relative min-h-[420px] p-5 sm:p-7">
-                <img src={installation} alt="Lichtinstallation mit transparenten Farbflächen in einer Galerie" className="h-full w-full rounded-hero object-cover" width={1008} height={1200} />
-                <div className="image-label"><span>Aktuelle Ausstellung</span><strong>Stille Verschiebung</strong><small>Nora Vahle · Malerei und Raum</small></div>
-              </div>
+               <HeroCarousel />
             </div>
           </div>
         </div>
@@ -99,13 +105,18 @@ function Index() {
         </div>
       </section>
 
-      <section id="programm" className="page-width scroll-mt-24 pb-24">
-        <div className="glass-panel p-7 sm:p-12">
-          <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr]">
-            <div><div className="kicker text-ochre">Vermittlung & Programm</div><h2 className="section-heading">Kunst begreifen — mit Augen, Händen und Neugier.</h2><p className="mt-5 font-serif text-lg text-ink-muted">Führungen, Gespräche und offene Werkstätten für alle Altersstufen.</p></div>
-            <div className="divide-y divide-line border-t border-line">
-              {events.map(([date, title, text]) => <article className="event-row" key={title}><time>{date}</time><div><h3>{title}</h3><p>{text}</p></div><span aria-hidden="true">↗</span></article>)}
-            </div>
+       <section id="veranstaltungen" className="events-band scroll-mt-24">
+         <div className="page-width py-20 md:py-24">
+           <div className="events-intro">
+             <SectionTitle kicker="Kalender" title="Veranstaltungen" text="Begegnen, fragen, ausprobieren: Führungen, Gespräche und offene Werkstätten für alle Altersstufen." />
+             <a href="#kontakt" className="button button-light">Alle Termine erhalten</a>
+           </div>
+           <div className="events-grid">
+             {events.map((event) => <article className="event-card" key={event.title}>
+               <div className="event-date" aria-label={`${event.day}. ${event.month}`}><strong>{event.day}</strong><span>{event.month}</span></div>
+               <div className="event-content"><div className="event-meta"><span>{event.type}</span><time>{event.time}</time></div><h3>{event.title}</h3><p>{event.text}</p></div>
+               <span className="event-arrow" aria-hidden="true">↗</span>
+             </article>)}
           </div>
         </div>
       </section>
@@ -143,6 +154,54 @@ function Index() {
       <footer><div className="page-width flex flex-col items-start justify-between gap-5 py-8 sm:flex-row sm:items-center"><div className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></div><p>© 2026 · Impressum · Datenschutz · Instagram</p></div></footer>
     </main>
   );
+}
+
+function HeroCarousel() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (paused || reducedMotion) return;
+    const timer = window.setInterval(() => setActive((current) => (current + 1) % slides.length), 5000);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  const show = (index: number) => setActive((index + slides.length) % slides.length);
+
+  return <div
+    className="hero-carousel"
+    role="region"
+    aria-roledescription="Karussell"
+    aria-label="Aktuelle Ausstellungen und Veranstaltungen"
+    onMouseEnter={() => setPaused(true)}
+    onMouseLeave={() => setPaused(false)}
+    onFocusCapture={() => setPaused(true)}
+    onBlurCapture={(event) => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
+    }}
+    onKeyDown={(event) => {
+      if (event.key === "ArrowLeft") show(active - 1);
+      if (event.key === "ArrowRight") show(active + 1);
+    }}
+  >
+    <div className="carousel-viewport" aria-live="polite">
+      <div className="carousel-track" style={{ transform: `translateX(-${active * 100}%)` }}>
+        {slides.map((slide, index) => <article className="carousel-slide" key={slide.title} aria-hidden={index !== active}>
+          <img src={slide.image} alt={slide.alt} width={1008} height={1200} />
+          <a className="image-label" href={slide.href} tabIndex={index === active ? 0 : -1}><span>{slide.type} · {slide.date}</span><strong>{slide.title}</strong><small>{slide.detail}</small></a>
+        </article>)}
+      </div>
+    </div>
+    <div className="carousel-controls">
+      <Button type="button" size="icon" variant="outline" className="carousel-arrow" aria-label="Vorheriges Bild" onClick={() => show(active - 1)}><ArrowLeft /></Button>
+      <div className="carousel-dots" role="group" aria-label="Bild auswählen">
+        {slides.map((slide, index) => <Button type="button" variant="ghost" className={`carousel-dot ${active === index ? "is-active" : ""}`} aria-label={`${slide.title} anzeigen`} aria-current={active === index ? "true" : undefined} onClick={() => show(index)} key={slide.title}><span /></Button>)}
+      </div>
+      <Button type="button" size="icon" variant="outline" className="carousel-arrow" aria-label="Nächstes Bild" onClick={() => show(active + 1)}><ArrowRight /></Button>
+    </div>
+    <span className="carousel-count" aria-hidden="true">{String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
+  </div>;
 }
 
 function SectionTitle({ kicker, title, text, centered = false }: { kicker: string; title: string; text?: string; centered?: boolean }) {
