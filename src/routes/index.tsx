@@ -61,8 +61,8 @@ function Index() {
              <a href="#veranstaltungen">Veranstaltungen</a><a href="#verein">Verein</a><a href="#besuch">Besuch</a>
           </nav>
           <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
-            <a href="tel:+495110000000" className="topbar-link hidden xl:inline-flex"><Phone size={13} aria-hidden="true" />+49 511 000 00-0</a>
-            <a href="mailto:info@kunstverein-lichtung.de" className="topbar-link hidden lg:inline-flex"><Mail size={13} aria-hidden="true" /><span className="hidden 2xl:inline">info@kunstverein-lichtung.de</span><span className="2xl:hidden">E-Mail</span></a>
+            <a href="tel:+495110000000" className="topbar-link hidden items-center gap-1.5 xl:inline-flex"><Phone size={13} aria-hidden="true" />+49 511 000 00-0</a>
+            <a href="mailto:info@kunstverein-lichtung.de" className="topbar-link hidden items-center gap-1.5 lg:inline-flex"><Mail size={13} aria-hidden="true" /><span className="hidden 2xl:inline">info@kunstverein-lichtung.de</span><span className="2xl:hidden">E-Mail</span></a>
             <span className="topbar-divider hidden lg:block" aria-hidden="true" />
             <a href="https://instagram.com/kunstvereinlichtung" className="social-dot" aria-label="Instagram" target="_blank" rel="noreferrer"><Instagram size={13} /></a>
             <a href="https://facebook.com/kunstvereinlichtung" className="social-dot" aria-label="Facebook" target="_blank" rel="noreferrer"><Facebook size={13} /></a>

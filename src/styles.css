@@ -19,7 +19,7 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
 a { color: inherit; text-decoration: none; }
 .site-shell { position: relative; min-height: 100vh; overflow: clip; }
 .page-width { width: min(100% - 2rem, 1360px); margin-inline: auto; }
-.topbar-link { display: inline-flex; align-items: center; gap: .4rem; font-size: 12px; font-weight: 700; color: var(--ink-muted); transition: color .2s; white-space: nowrap; }
+.topbar-link { font-size: 12px; font-weight: 700; color: var(--ink-muted); transition: color .2s; white-space: nowrap; }
 .topbar-link:hover { color: var(--cobalt); }
 .topbar-divider { width: 1px; height: 1.4rem; background: var(--line); }
 .social-dot { display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: oklch(1 0 0 / .55); transition: background .2s, color .2s, transform .2s; }
