@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import installation from "@/assets/lichtung-installation.jpg";
@@ -53,6 +53,21 @@ function Index() {
       <div className="ambient ambient-two" aria-hidden="true" />
       <div className="ambient ambient-three" aria-hidden="true" />
 
+      <div className="utility-bar">
+        <div className="page-width flex items-center justify-between gap-4 py-2">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-5">
+            <a href="tel:+495110000000" className="utility-link"><Phone size={12} aria-hidden="true" /><span className="hidden sm:inline">+49 511 000 00-0</span><span className="sm:hidden">Anrufen</span></a>
+            <a href="mailto:info@kunstverein-lichtung.de" className="utility-link"><Mail size={12} aria-hidden="true" /><span className="truncate">info@kunstverein-lichtung.de</span></a>
+            <span className="hidden items-center gap-1.5 text-ink-muted lg:inline-flex"><MapPin size={12} aria-hidden="true" />Sandwiese 12 · Hannover</span>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="hidden text-ink-muted md:inline">Di–So geöffnet</span>
+            <a href="https://instagram.com/kunstvereinlichtung" className="social-dot" aria-label="Instagram" target="_blank" rel="noreferrer"><Instagram size={13} /></a>
+            <a href="https://facebook.com/kunstvereinlichtung" className="social-dot" aria-label="Facebook" target="_blank" rel="noreferrer"><Facebook size={13} /></a>
+          </div>
+        </div>
+      </div>
+
       <header className="topbar">
         <div className="page-width flex items-center justify-between gap-6 py-4">
           <a href="#top" className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></a>
@@ -60,7 +75,7 @@ function Index() {
             <a href="#ausstellungen">Ausstellungen</a><a href="#kuenstler">Künstler:innen</a>
              <a href="#veranstaltungen">Veranstaltungen</a><a href="#verein">Verein</a><a href="#besuch">Besuch</a>
           </nav>
-          <a href="#mitgliedschaft" className="button button-dark">Mitglied werden</a>
+          <a href="#mitgliedschaft" className="button button-dark shrink-0">Mitglied werden</a>
         </div>
       </header>
 
@@ -151,7 +166,31 @@ function Index() {
         </div>
       </section>
 
-      <footer><div className="page-width flex flex-col items-start justify-between gap-5 py-8 sm:flex-row sm:items-center"><div className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></div><p>© 2026 · Impressum · Datenschutz · Instagram</p></div></footer>
+      <footer>
+        <div className="page-width py-14">
+          <div className="footer-grid">
+            <div>
+              <div className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></div>
+              <p className="footer-blurb">Zeitgenössische Kunst in der Region Hannover — gezeigt und vermittelt von einem gemeinnützigen Verein, getragen von seinen Mitgliedern.</p>
+              <div className="mt-5 flex gap-2">
+                <a href="https://instagram.com/kunstvereinlichtung" className="social-dot" aria-label="Instagram" target="_blank" rel="noreferrer"><Instagram size={15} /></a>
+                <a href="https://facebook.com/kunstvereinlichtung" className="social-dot" aria-label="Facebook" target="_blank" rel="noreferrer"><Facebook size={15} /></a>
+                <a href="mailto:info@kunstverein-lichtung.de" className="social-dot" aria-label="E-Mail schreiben"><Mail size={15} /></a>
+              </div>
+            </div>
+            <div className="footer-block">
+              <strong>Besuch & Kontakt</strong>
+              <p>Kunstverein Lichtung e. V.<br />Sandwiese 12 · 30169 Hannover</p>
+              <p><a href="tel:+495110000000" className="footer-link">+49 511 000 00-0</a><br /><a href="mailto:info@kunstverein-lichtung.de" className="footer-link">info@kunstverein-lichtung.de</a></p>
+            </div>
+            <div className="footer-block">
+              <strong>Öffnungszeiten</strong>
+              <p>Di–Fr 14–18 Uhr<br />Sa–So 11–17 Uhr<br />Montags geschlossen</p>
+            </div>
+          </div>
+          <div className="footer-legal"><p>© 2026 Kunstverein Lichtung e. V.</p><p>Impressum · Datenschutz</p></div>
+        </div>
+      </footer>
     </main>
   );
 }
