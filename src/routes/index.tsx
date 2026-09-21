@@ -53,20 +53,29 @@ function Index() {
       <div className="ambient ambient-two" aria-hidden="true" />
       <div className="ambient ambient-three" aria-hidden="true" />
 
-      <header className="topbar">
-        <div className="page-width topbar-inner">
-          <a href="#top" className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></a>
-          <nav className="topbar-nav" aria-label="Hauptnavigation">
-            <a href="#ausstellungen">Ausstellungen</a><a href="#kuenstler">Künstler:innen</a>
-            <a href="#veranstaltungen">Veranstaltungen</a><a href="#verein">Verein</a><a href="#besuch">Besuch</a>
-          </nav>
-          <div className="topbar-actions">
-            <a href="tel:+495110000000" className="topbar-link" aria-label="Anrufen: +49 511 000 00-0"><Phone size={14} aria-hidden="true" /><span className="topbar-link-text">+49 511 000 00-0</span></a>
-            <a href="mailto:info@kunstverein-lichtung.de" className="topbar-link" aria-label="E-Mail an info@kunstverein-lichtung.de"><Mail size={14} aria-hidden="true" /><span className="topbar-link-text">info@kunstverein-lichtung.de</span></a>
-            <a href="https://instagram.com/kunstvereinlichtung" className="social-dot" aria-label="Instagram" target="_blank" rel="noreferrer"><Instagram size={14} /></a>
-            <a href="https://facebook.com/kunstvereinlichtung" className="social-dot" aria-label="Facebook" target="_blank" rel="noreferrer"><Facebook size={14} /></a>
-            <a href="#mitgliedschaft" className="button button-dark shrink-0">Mitglied werden</a>
+      <div className="utility-bar">
+        <div className="page-width flex items-center justify-between gap-4 py-2">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-5">
+            <a href="tel:+495110000000" className="utility-link"><Phone size={12} aria-hidden="true" /><span className="hidden sm:inline">+49 511 000 00-0</span><span className="sm:hidden">Anrufen</span></a>
+            <a href="mailto:info@kunstverein-lichtung.de" className="utility-link"><Mail size={12} aria-hidden="true" /><span className="truncate">info@kunstverein-lichtung.de</span></a>
+            <span className="hidden items-center gap-1.5 text-ink-muted lg:inline-flex"><MapPin size={12} aria-hidden="true" />Sandwiese 12 · Hannover</span>
           </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="hidden text-ink-muted md:inline">Di–So geöffnet</span>
+            <a href="https://instagram.com/kunstvereinlichtung" className="social-dot" aria-label="Instagram" target="_blank" rel="noreferrer"><Instagram size={13} /></a>
+            <a href="https://facebook.com/kunstvereinlichtung" className="social-dot" aria-label="Facebook" target="_blank" rel="noreferrer"><Facebook size={13} /></a>
+          </div>
+        </div>
+      </div>
+
+      <header className="topbar">
+        <div className="page-width flex items-center justify-between gap-6 py-4">
+          <a href="#top" className="brand"><span className="brand-mark">L</span><span>LICHTUNG</span></a>
+          <nav className="hidden items-center gap-6 lg:flex" aria-label="Hauptnavigation">
+            <a href="#ausstellungen">Ausstellungen</a><a href="#kuenstler">Künstler:innen</a>
+             <a href="#veranstaltungen">Veranstaltungen</a><a href="#verein">Verein</a><a href="#besuch">Besuch</a>
+          </nav>
+          <a href="#mitgliedschaft" className="button button-dark shrink-0">Mitglied werden</a>
         </div>
       </header>
 
