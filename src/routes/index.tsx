@@ -153,7 +153,7 @@ function Index() {
 
       <section id="kontakt" className="page-width scroll-mt-24 pb-24">
         <div className="glass-panel grid gap-10 p-7 sm:p-12 lg:grid-cols-2">
-          <div><div className="kicker text-vermilion">Bleiben Sie verbunden</div><h2 className="section-heading">Post aus der Lichtung.</h2><p className="mt-4 font-serif text-lg text-ink-muted">Ausstellungseröffnungen und Programm, etwa einmal im Monat.</p><form className="mt-7 flex gap-2" onSubmit={(event) => event.preventDefault()}><label className="sr-only" htmlFor="newsletter">E-Mail-Adresse</label><input id="newsletter" type="email" placeholder="ihre@email.de" /><button type="submit" className="button button-dark">Anmelden</button></form></div>
+          <div><div className="kicker text-vermilion">Bleiben Sie verbunden</div><h2 className="section-heading">Post aus der Lichtung.</h2><p className="mt-4 font-serif text-lg text-ink-muted">Ausstellungseröffnungen und Programm — tragen Sie Ihre Kontaktdaten ein, wir melden uns etwa einmal im Monat.</p><ContactForm /></div>
           <div className="grid gap-4 sm:grid-cols-2"><Info title="Kontakt">info@kunstverein-lichtung.de</Info><Info title="Presse">Petra Lindqvist<br />Pressemappe anfragen</Info><Info title="Jahresgabe 2026">Limitierte Edition von Nora Vahle</Info><Info title="Instagram">@kunstvereinlichtung</Info></div>
         </div>
       </section>
@@ -161,21 +161,34 @@ function Index() {
       <footer>
         <div className="page-width py-16">
           <div className="footer-connect">
-            <a className="connect-card" href="tel:+495110000000">
-              <span className="connect-icon connect-cobalt"><Phone size={20} aria-hidden="true" /></span>
-              <span className="connect-text"><small>Anrufen</small><strong>+49 511 000 00-0</strong></span>
-              <ArrowUpRight className="connect-arrow" aria-hidden="true" />
-            </a>
-            <a className="connect-card" href="mailto:info@kunstverein-lichtung.de">
-              <span className="connect-icon connect-vermilion"><Mail size={20} aria-hidden="true" /></span>
-              <span className="connect-text"><small>E-Mail schreiben</small><strong>info@kunstverein-lichtung.de</strong></span>
-              <ArrowUpRight className="connect-arrow" aria-hidden="true" />
-            </a>
-            <a className="connect-card" href="#besuch">
-              <span className="connect-icon connect-ochre"><MapPin size={20} aria-hidden="true" /></span>
-              <span className="connect-text"><small>Besuch</small><strong>Sandwiese 12 · 30169 Hannover</strong></span>
-              <ArrowUpRight className="connect-arrow" aria-hidden="true" />
-            </a>
+            <div className="connect-column">
+              <a className="connect-card" href="mailto:info@kunstverein-lichtung.de">
+                <span className="connect-icon connect-vermilion"><Mail size={24} aria-hidden="true" /></span>
+                <span className="connect-text"><small>E-Mail schreiben</small><strong>info@kunstverein-lichtung.de</strong></span>
+                <ArrowUpRight className="connect-arrow" aria-hidden="true" />
+              </a>
+              <a className="connect-card" href="tel:+495110000000">
+                <span className="connect-icon connect-cobalt"><Phone size={24} aria-hidden="true" /></span>
+                <span className="connect-text"><small>Anrufen</small><strong>+49 511 000 00-0</strong></span>
+                <ArrowUpRight className="connect-arrow" aria-hidden="true" />
+              </a>
+            </div>
+            <div className="connect-location">
+              <a className="connect-card" href="#besuch">
+                <span className="connect-icon connect-ochre"><MapPin size={24} aria-hidden="true" /></span>
+                <span className="connect-text"><small>Besuch & Adresse</small><strong>Kunstverein Lichtung e. V. · Sandwiese 12, 30169 Hannover</strong></span>
+                <ArrowUpRight className="connect-arrow" aria-hidden="true" />
+              </a>
+              <div className="map-frame">
+                <iframe
+                  title="Karte: Kunstverein Lichtung, Sandwiese 12, 30169 Hannover"
+                  src="https://maps.google.com/maps?q=Sandwiese%2012%2C%2030169%20Hannover&z=15&hl=de&output=embed"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+            </div>
           </div>
           <div className="footer-grid">
             <div>
@@ -258,3 +271,79 @@ function SectionTitle({ kicker, title, text, centered = false }: { kicker: strin
 function Stat({ value, label }: { value: string; label: string }) { return <div className="stat"><strong>{value}</strong><span>{label}</span></div>; }
 function Tier({ name, price, benefits, featured = false }: { name: string; price: string; benefits: string[]; featured?: boolean }) { return <article className={`tier glass-card ${featured ? "featured" : ""}`}>{featured && <span className="popular">Besonders beliebt</span>}<h3>{name}</h3><div className="price">{price}<small>/ Jahr</small></div><ul>{benefits.map((benefit) => <li key={benefit}>✓ {benefit}</li>)}</ul><a href="#kontakt" className={`button ${featured ? "button-dark" : "button-light"}`}>Mitglied werden</a></article>; }
 function Info({ title, children }: { title: string; children: React.ReactNode }) { return <div className="info"><strong>{title}</strong><p>{children}</p></div>; }
+
+type ContactValues = { firstName: string; lastName: string; phone: string; email: string };
+type ContactErrors = Partial<Record<keyof ContactValues, string>>;
+
+const phonePattern = /^\+?[0-9 ()\/-]{6,20}$/;
+
+function validateContact(values: ContactValues): ContactErrors {
+  const errors: ContactErrors = {};
+  if (!values.firstName.trim()) errors.firstName = "Bitte Vorname angeben.";
+  if (!values.lastName.trim()) errors.lastName = "Bitte Nachname angeben.";
+  if (!values.phone.trim()) errors.phone = "Bitte Telefonnummer angeben.";
+  else if (!phonePattern.test(values.phone.trim())) errors.phone = "Bitte eine gültige Telefonnummer angeben.";
+  if (!values.email.trim()) errors.email = "Bitte E-Mail-Adresse angeben.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) errors.email = "Bitte eine gültige E-Mail-Adresse angeben.";
+  return errors;
+}
+
+function ContactForm() {
+  const [values, setValues] = useState<ContactValues>({ firstName: "", lastName: "", phone: "", email: "" });
+  const [errors, setErrors] = useState<ContactErrors>({});
+  const [sent, setSent] = useState(false);
+
+  const setField = (field: keyof ContactValues) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setValues((current) => ({ ...current, [field]: value }));
+    setErrors((current) => (current[field] ? { ...current, [field]: undefined } : current));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const nextErrors = validateContact(values);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length === 0) setSent(true);
+  };
+
+  if (sent) {
+    return (
+      <div className="form-success" role="status">
+        <strong>Vielen Dank, {values.firstName.trim()}!</strong>
+        <p>Ihre Angaben sind eingegangen — wir melden uns mit dem nächsten Programm.</p>
+        <button type="button" className="button button-light" onClick={() => { setValues({ firstName: "", lastName: "", phone: "", email: "" }); setErrors({}); setSent(false); }}>
+          Weitere Anmeldung
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="contact-form" onSubmit={handleSubmit}>
+      <div className="field-row">
+        <ContactField id="first-name" label="Vorname" type="text" autoComplete="given-name" placeholder="Vorname" value={values.firstName} onChange={setField("firstName")} error={errors.firstName} />
+        <ContactField id="last-name" label="Nachname" type="text" autoComplete="family-name" placeholder="Nachname" value={values.lastName} onChange={setField("lastName")} error={errors.lastName} />
+      </div>
+      <div className="field-row">
+        <ContactField id="phone" label="Telefonnummer" type="tel" autoComplete="tel" placeholder="+49 511 000 00-0" value={values.phone} onChange={setField("phone")} error={errors.phone} />
+        <ContactField id="email" label="E-Mail-Adresse" type="email" autoComplete="email" placeholder="ihre@email.de" value={values.email} onChange={setField("email")} error={errors.email} />
+      </div>
+      <div className="field-submit">
+        <button type="submit" className="button button-dark">Anmelden</button>
+        <small>Wir verwenden Ihre Daten ausschließlich für den Vereins-Newsletter.</small>
+      </div>
+    </form>
+  );
+}
+
+function ContactField({ id, label, type, value, onChange, error, placeholder, autoComplete }: {
+  id: string; label: string; type: string; value: string; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; error?: string; placeholder: string; autoComplete: string;
+}) {
+  return (
+    <div className="field">
+      <label htmlFor={id}>{label}</label>
+      <input id={id} name={id} type={type} value={value} onChange={onChange} placeholder={placeholder} autoComplete={autoComplete} required className={error ? "invalid" : undefined} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined} />
+      {error && <p className="error-text" id={`${id}-error`}>{error}</p>}
+    </div>
+  );
+}
