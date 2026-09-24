@@ -337,7 +337,7 @@ function ContactForm() {
 }
 
 function ContactField({ id, label, type, value, onChange, error, placeholder, autoComplete }: {
-  id: string; label: string; type: string; value: string; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; error?: string; placeholder: string; autoComplete: string;
+  id: string; label: string; type: string; value: string; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; error: string | undefined; placeholder: string; autoComplete: string;
 }) {
   return (
     <div className="field">
