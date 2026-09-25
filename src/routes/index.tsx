@@ -33,11 +33,26 @@ const artists = [
   { name: "Ines Kral", role: "Fotografie, Archivarbeit", image: ines, alt: "Porträt der Künstlerin Ines Kral mit einer Druckgrafik" },
 ];
 
-const events = [
-  { day: "23", month: "NOV", time: "SA · 15 UHR", title: "Kuratorenführung", text: "Rundgang durch „Stille Verschiebung“ mit Jens Ohlendorf.", type: "Führung" },
-  { day: "05", month: "DEZ", time: "DO · 19 UHR", title: "Künstlergespräch mit Nora Vahle", text: "Im Gespräch mit der Kunsthistorikerin Petra Lindqvist.", type: "Gespräch" },
-  { day: "08", month: "DEZ", time: "SO · 11–14 UHR", title: "Werkstatt für Kinder", text: "Farbe und Raum — eigenes Gestalten für Kinder von 6 bis 10 Jahren.", type: "Werkstatt" },
-  { day: "01", month: "MI", time: "JEDEN 1. MITTWOCH", title: "Offenes Atelier für Jugendliche", text: "Freies Arbeiten mit Materialien des Vereins, kostenfrei.", type: "Offenes Atelier" },
+type EventCategory = "Führung" | "Gespräch" | "Werkstatt" | "Offenes Atelier";
+
+type CalendarEvent = {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  category: EventCategory;
+};
+
+const events: CalendarEvent[] = [
+  { id: "fuehrung-stille-verschiebung", title: "Kuratorenführung", date: "2026-11-21", time: "SA · 15 UHR", description: "Rundgang durch „Stille Verschiebung“ mit Jens Ohlendorf.", image: installation, imageAlt: "Lichtinstallation mit transparenten Farbflächen in einer Galerie", category: "Führung" },
+  { id: "offenes-atelier-jugend", title: "Offenes Atelier für Jugendliche", date: "2026-12-02", time: "JEDEN 1. MITTWOCH", description: "Freies Arbeiten mit Materialien des Vereins, kostenfrei.", image: tomas, imageAlt: "Fotograf Tomas Berge in seinem Atelier", category: "Offenes Atelier" },
+  { id: "gespraech-nora-vahle", title: "Künstlergespräch mit Nora Vahle", date: "2026-12-05", time: "SA · 19 UHR", description: "Im Gespräch mit der Kunsthistorikerin Petra Lindqvist.", image: nora, imageAlt: "Künstlerin Nora Vahle in ihrem Atelier", category: "Gespräch" },
+  { id: "werkstatt-kinder", title: "Werkstatt für Kinder", date: "2026-12-13", time: "SO · 11–14 UHR", description: "Farbe und Raum — eigenes Gestalten für Kinder von 6 bis 10 Jahren.", image: tomas, imageAlt: "Fotograf Tomas Berge bei der Arbeit im Atelier", category: "Werkstatt" },
+  { id: "finissage-stille-verschiebung", title: "Finissage „Stille Verschiebung“", date: "2026-12-19", time: "SA · 15 UHR", description: "Letzter Tag der Ausstellung — Abschlussrunde mit Nora Vahle.", image: installation, imageAlt: "Galerieinstallation mit farbigen Lichtflächen", category: "Führung" },
+  { id: "druckwerkstatt-erwachsene", title: "Druckwerkstatt für Erwachsene", date: "2027-01-16", time: "SA · 11 UHR", description: "Radierung und Monotypie — Einführung mit Ines Kral.", image: ines, imageAlt: "Künstlerin Ines Kral mit einer Druckgrafik", category: "Werkstatt" },
 ];
 
 const slides = [
@@ -112,21 +127,7 @@ function Index() {
         </div>
       </section>
 
-       <section id="veranstaltungen" className="events-band scroll-mt-24">
-         <div className="page-width py-20 md:py-24">
-           <div className="events-intro">
-             <SectionTitle kicker="Kalender" title="Veranstaltungen" text="Begegnen, fragen, ausprobieren: Führungen, Gespräche und offene Werkstätten für alle Altersstufen." />
-             <a href="#kontakt" className="button button-light">Alle Termine erhalten</a>
-           </div>
-           <div className="events-grid">
-             {events.map((event) => <article className="event-card" key={event.title}>
-               <div className="event-date" aria-label={`${event.day}. ${event.month}`}><strong>{event.day}</strong><span>{event.month}</span></div>
-               <div className="event-content"><div className="event-meta"><span>{event.type}</span><time>{event.time}</time></div><h3>{event.title}</h3><p>{event.text}</p></div>
-               <span className="event-arrow" aria-hidden="true">↗</span>
-             </article>)}
-          </div>
-        </div>
-      </section>
+       <EventsSection />
 
       <section id="verein" className="page-width scroll-mt-24 pb-24">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_.8fr]">
@@ -214,6 +215,58 @@ function Index() {
         </div>
       </footer>
     </main>
+  );
+}
+
+function eventDateParts(date: string) {
+  const parsed = new Date(`${date}T12:00:00`);
+  return {
+    day: parsed.getDate(),
+    month: Intl.DateTimeFormat("de-DE", { month: "short" }).format(parsed).replace(".", "").toUpperCase(),
+  };
+}
+
+function EventsSection() {
+  const [filter, setFilter] = useState<string>("Alle");
+  const categories = Array.from(new Set(events.map((event) => event.category)));
+  const sorted = [...events].sort((a, b) => a.date.localeCompare(b.date));
+  const visible = filter === "Alle" ? sorted : sorted.filter((event) => event.category === filter);
+
+  return (
+    <section id="veranstaltungen" className="events-band scroll-mt-24">
+      <div className="page-width py-20 md:py-24">
+        <div className="events-intro">
+          <SectionTitle kicker="Kalender" title="Veranstaltungen" text="Begegnen, fragen, ausprobieren: Führungen, Gespräche und offene Werkstätten für alle Altersstufen." />
+          <a href="#kontakt" className="button button-light">Alle Termine erhalten</a>
+        </div>
+        <div className="event-filters" role="group" aria-label="Veranstaltungen nach Kategorie filtern">
+          {["Alle", ...categories].map((category) => (
+            <button key={category} type="button" className="event-chip" aria-pressed={filter === category} onClick={() => setFilter(category)}>
+              {category}
+            </button>
+          ))}
+        </div>
+        <div className="events-grid" aria-live="polite">
+          {visible.map((event) => {
+            const { day, month } = eventDateParts(event.date);
+            return (
+              <article className="event-card" key={event.id}>
+                <div className="event-date"><strong>{day}</strong><span>{month}</span></div>
+                <div className="event-content">
+                  <div className="event-meta"><span>{event.category}</span><time dateTime={event.date}>{event.time}</time></div>
+                  <h3>{event.title}</h3>
+                  <p>{event.description}</p>
+                </div>
+                <div className="event-media">
+                  <img src={event.image} alt={event.imageAlt} loading="lazy" width={480} height={360} />
+                  <span className="event-arrow" aria-hidden="true">↗</span>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
 
