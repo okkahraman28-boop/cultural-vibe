@@ -90,17 +90,17 @@ function Index() {
         <div className="hero-stack">
           <div className="hero-layer hero-layer-one" /><div className="hero-layer hero-layer-two" />
           <div className="glass-panel relative overflow-hidden">
-            <div className="grid lg:grid-cols-[1.05fr_.95fr]">
-              <div className="flex flex-col justify-center p-7 sm:p-12 lg:p-16">
+            <div className="hero-layout">
+              <div className="hero-intro">
                 <div className="eyebrow"><span /> Aktuell · bis 14. Dezember</div>
-                <h1 className="mt-6 text-5xl leading-[.95] font-black sm:text-6xl lg:text-7xl">Ein Ort, der<br />sich <em>öffnet.</em></h1>
-                <p className="mt-6 max-w-lg font-serif text-lg leading-relaxed text-ink-muted">Zeitgenössische Kunst, gezeigt und vermittelt von einem gemeinnützigen Verein — getragen von seinen Mitgliedern, offen für alle.</p>
-                 <div className="mt-8 flex flex-wrap gap-3"><a className="button button-dark" href="#ausstellungen">Ausstellungen ansehen</a><a className="button button-light" href="#veranstaltungen">Veranstaltungen entdecken</a></div>
-                <div className="mt-10 grid max-w-md grid-cols-3 gap-5 border-t border-line pt-5 font-display">
+                <h1 className="mt-6 text-5xl leading-[.95] font-black sm:text-6xl lg:text-7xl">Ein Ort, der sich <em>öffnet.</em></h1>
+                <p className="mt-6 max-w-2xl font-serif text-lg leading-relaxed text-ink-muted">Zeitgenössische Kunst, gezeigt und vermittelt von einem gemeinnützigen Verein — getragen von seinen Mitgliedern, offen für alle.</p>
+                <div className="mt-8 flex flex-wrap justify-center gap-3"><a className="button button-dark" href="#ausstellungen">Ausstellungen ansehen</a><a className="button button-light" href="#veranstaltungen">Veranstaltungen entdecken</a></div>
+                <div className="hero-metrics mt-10 grid grid-cols-3 gap-5 border-t border-line pt-5 font-display">
                    <div><strong>1978</strong><small>gegründet</small></div><div><strong>340</strong><small>Mitglieder</small></div><div><strong>4</strong><small>Ausstellungen / Jahr</small></div>
                 </div>
               </div>
-               <HeroCarousel />
+              <HeroCarousel />
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@ function Index() {
 
       <section id="kontakt" className="page-width scroll-mt-24 pb-24">
         <div className="glass-panel grid gap-10 p-7 sm:p-12 lg:grid-cols-2">
-          <div><div className="kicker text-vermilion">Bleiben Sie verbunden</div><h2 className="section-heading">Post aus der Lichtung.</h2><p className="mt-4 font-serif text-lg text-ink-muted">Ausstellungseröffnungen und Programm — tragen Sie Ihre Kontaktdaten ein, wir melden uns etwa einmal im Monat.</p><ContactForm /></div>
+          <div><div className="kicker text-cobalt">Bleiben Sie verbunden</div><h2 className="section-heading">Post aus der Lichtung.</h2><p className="mt-4 font-serif text-lg text-ink-muted">Ausstellungseröffnungen und Programm — tragen Sie Ihre Kontaktdaten ein, wir melden uns etwa einmal im Monat.</p><ContactForm /></div>
           <div className="grid gap-4 sm:grid-cols-2"><Info title="Kontakt">info@kunstverein-lichtung.de</Info><Info title="Presse">Petra Lindqvist<br />Pressemappe anfragen</Info><Info title="Jahresgabe 2026">Limitierte Edition von Nora Vahle</Info><Info title="Instagram">@kunstvereinlichtung</Info></div>
         </div>
       </section>
@@ -247,26 +247,29 @@ function EventsSection() {
           ))}
         </div>
         <div className="events-grid" aria-live="polite">
-          {visible.map((event) => {
-            const { day, month } = eventDateParts(event.date);
-            return (
-              <article className="event-card" key={event.id}>
-                <div className="event-date"><strong>{day}</strong><span>{month}</span></div>
-                <div className="event-content">
-                  <div className="event-meta"><span>{event.category}</span><time dateTime={event.date}>{event.time}</time></div>
-                  <h3>{event.title}</h3>
-                  <p>{event.description}</p>
-                </div>
-                <div className="event-media">
-                  <img src={event.image} alt={event.imageAlt} loading="lazy" width={480} height={360} />
-                  <span className="event-arrow" aria-hidden="true">↗</span>
-                </div>
-              </article>
-            );
-          })}
+          {visible.map((event) => <EventCard event={event} key={event.id} />)}
         </div>
       </div>
     </section>
+  );
+}
+
+function EventCard({ event }: { event: CalendarEvent }) {
+  const { day, month } = eventDateParts(event.date);
+
+  return (
+    <article className="event-card">
+      <div className="event-media">
+        <img src={event.image} alt={event.imageAlt} loading="lazy" width={720} height={405} />
+        <span className="event-arrow" aria-hidden="true">↗</span>
+      </div>
+      <div className="event-date"><strong>{day}</strong><span>{month}</span></div>
+      <div className="event-content">
+        <div className="event-meta"><span>{event.category}</span><time dateTime={event.date}>{event.time}</time></div>
+        <h3>{event.title}</h3>
+        <p>{event.description}</p>
+      </div>
+    </article>
   );
 }
 
@@ -319,7 +322,7 @@ function HeroCarousel() {
 }
 
 function SectionTitle({ kicker, title, text, centered = false }: { kicker: string; title: string; text?: string; centered?: boolean }) {
-  return <div className={`mb-9 ${centered ? "mx-auto max-w-2xl" : "max-w-3xl"}`}><div className="kicker text-vermilion">{kicker}</div><h2 className="section-heading">{title}</h2>{text && <p className="mt-3 font-serif text-lg text-ink-muted">{text}</p>}</div>;
+  return <div className={`mb-9 ${centered ? "mx-auto max-w-2xl" : "max-w-3xl"}`}><div className="kicker text-cobalt">{kicker}</div><h2 className="section-heading">{title}</h2>{text && <p className="mt-3 font-serif text-lg text-ink-muted">{text}</p>}</div>;
 }
 function Stat({ value, label }: { value: string; label: string }) { return <div className="stat"><strong>{value}</strong><span>{label}</span></div>; }
 function Tier({ name, price, benefits, featured = false }: { name: string; price: string; benefits: string[]; featured?: boolean }) { return <article className={`tier glass-card ${featured ? "featured" : ""}`}>{featured && <span className="popular">Besonders beliebt</span>}<h3>{name}</h3><div className="price">{price}<small>/ Jahr</small></div><ul>{benefits.map((benefit) => <li key={benefit}>✓ {benefit}</li>)}</ul><a href="#kontakt" className={`button ${featured ? "button-dark" : "button-light"}`}>Mitglied werden</a></article>; }
