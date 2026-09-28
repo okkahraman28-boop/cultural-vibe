@@ -6,6 +6,12 @@ import installation from "@/assets/lichtung-installation.jpg";
 import nora from "@/assets/nora-vahle.jpg";
 import tomas from "@/assets/tomas-berge.jpg";
 import ines from "@/assets/ines-kral.jpg";
+import eventFuehrung from "@/assets/event-fuehrung.asset.json";
+import eventAtelierJugend from "@/assets/event-atelier-jugend.asset.json";
+import eventGespraech from "@/assets/event-gespraech.asset.json";
+import eventWerkstattKinder from "@/assets/event-werkstatt-kinder.asset.json";
+import eventFinissage from "@/assets/event-finissage.asset.json";
+import eventDruckwerkstatt from "@/assets/event-druckwerkstatt.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,16 +49,17 @@ type CalendarEvent = {
   description: string;
   image: string;
   imageAlt: string;
+  imagePosition: string;
   category: EventCategory;
 };
 
 const events: CalendarEvent[] = [
-  { id: "fuehrung-stille-verschiebung", title: "Kuratorenführung", date: "2026-11-21", time: "SA · 15 UHR", description: "Rundgang durch „Stille Verschiebung“ mit Jens Ohlendorf.", image: installation, imageAlt: "Lichtinstallation mit transparenten Farbflächen in einer Galerie", category: "Führung" },
-  { id: "offenes-atelier-jugend", title: "Offenes Atelier für Jugendliche", date: "2026-12-02", time: "JEDEN 1. MITTWOCH", description: "Freies Arbeiten mit Materialien des Vereins, kostenfrei.", image: tomas, imageAlt: "Fotograf Tomas Berge in seinem Atelier", category: "Offenes Atelier" },
-  { id: "gespraech-nora-vahle", title: "Künstlergespräch mit Nora Vahle", date: "2026-12-05", time: "SA · 19 UHR", description: "Im Gespräch mit der Kunsthistorikerin Petra Lindqvist.", image: nora, imageAlt: "Künstlerin Nora Vahle in ihrem Atelier", category: "Gespräch" },
-  { id: "werkstatt-kinder", title: "Werkstatt für Kinder", date: "2026-12-13", time: "SO · 11–14 UHR", description: "Farbe und Raum — eigenes Gestalten für Kinder von 6 bis 10 Jahren.", image: tomas, imageAlt: "Fotograf Tomas Berge bei der Arbeit im Atelier", category: "Werkstatt" },
-  { id: "finissage-stille-verschiebung", title: "Finissage „Stille Verschiebung“", date: "2026-12-19", time: "SA · 15 UHR", description: "Letzter Tag der Ausstellung — Abschlussrunde mit Nora Vahle.", image: installation, imageAlt: "Galerieinstallation mit farbigen Lichtflächen", category: "Führung" },
-  { id: "druckwerkstatt-erwachsene", title: "Druckwerkstatt für Erwachsene", date: "2027-01-16", time: "SA · 11 UHR", description: "Radierung und Monotypie — Einführung mit Ines Kral.", image: ines, imageAlt: "Künstlerin Ines Kral mit einer Druckgrafik", category: "Werkstatt" },
+  { id: "fuehrung-stille-verschiebung", title: "Kuratorenführung", date: "2026-11-21", time: "SA · 15 UHR", description: "Rundgang durch „Stille Verschiebung“ mit Jens Ohlendorf.", image: eventFuehrung.url, imageAlt: "Besucherin betrachtet ein großformatiges abstraktes Kunstwerk", imagePosition: "center 38%", category: "Führung" },
+  { id: "offenes-atelier-jugend", title: "Offenes Atelier für Jugendliche", date: "2026-12-02", time: "JEDEN 1. MITTWOCH", description: "Freies Arbeiten mit Materialien des Vereins, kostenfrei.", image: eventAtelierJugend.url, imageAlt: "Kreativer Arbeitsplatz mit Farben und Zeichenmaterial", imagePosition: "center 45%", category: "Offenes Atelier" },
+  { id: "gespraech-nora-vahle", title: "Künstlergespräch mit Nora Vahle", date: "2026-12-05", time: "SA · 19 UHR", description: "Im Gespräch mit der Kunsthistorikerin Petra Lindqvist.", image: eventGespraech.url, imageAlt: "Farbenreiche abstrakte Malerei als Hintergrund eines Künstlergesprächs", imagePosition: "center 40%", category: "Gespräch" },
+  { id: "werkstatt-kinder", title: "Werkstatt für Kinder", date: "2026-12-13", time: "SO · 11–14 UHR", description: "Farbe und Raum — eigenes Gestalten für Kinder von 6 bis 10 Jahren.", image: eventWerkstattKinder.url, imageAlt: "Bunte Malerei in einer kreativen Kunstwerkstatt", imagePosition: "center 35%", category: "Werkstatt" },
+  { id: "finissage-stille-verschiebung", title: "Finissage „Stille Verschiebung“", date: "2026-12-19", time: "SA · 15 UHR", description: "Letzter Tag der Ausstellung — Abschlussrunde mit Nora Vahle.", image: eventFinissage.url, imageAlt: "Zeitgenössisches Kunstwerk in einer hellen Ausstellung", imagePosition: "center 48%", category: "Führung" },
+  { id: "druckwerkstatt-erwachsene", title: "Druckwerkstatt für Erwachsene", date: "2027-01-16", time: "SA · 11 UHR", description: "Radierung und Monotypie — Einführung mit Ines Kral.", image: eventDruckwerkstatt.url, imageAlt: "Detail einer grafischen Kunstarbeit in kräftigen Farben", imagePosition: "center 30%", category: "Werkstatt" },
 ];
 
 const slides = [
@@ -177,13 +184,13 @@ function Index() {
             <div className="connect-location">
               <a className="connect-card" href="#besuch">
                 <span className="connect-icon connect-ochre"><MapPin size={24} aria-hidden="true" /></span>
-                <span className="connect-text"><small>Besuch & Adresse</small><strong>Kunstverein Lichtung e. V. · Sandwiese 12, 30169 Hannover</strong></span>
+                <span className="connect-text"><small>Besuch & Adresse</small><strong>Krendelstraße 30A · 30916 Isernhagen</strong></span>
                 <ArrowUpRight className="connect-arrow" aria-hidden="true" />
               </a>
               <div className="map-frame">
                 <iframe
-                  title="Karte: Kunstverein Lichtung, Sandwiese 12, 30169 Hannover"
-                  src="https://maps.google.com/maps?q=Sandwiese%2012%2C%2030169%20Hannover&z=15&hl=de&output=embed"
+                  title="Karte: Krendelstraße 30A, 30916 Isernhagen"
+                  src="https://www.google.com/maps?q=Krendelstra%C3%9Fe%2030A%2C%2030916%20Isernhagen%2C%20Germany&z=16&hl=de&output=embed"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   allowFullScreen
@@ -260,7 +267,7 @@ function EventCard({ event }: { event: CalendarEvent }) {
   return (
     <article className="event-card">
       <div className="event-media">
-        <img src={event.image} alt={event.imageAlt} loading="lazy" width={720} height={405} />
+        <img src={event.image} alt={event.imageAlt} loading="lazy" width={720} height={405} style={{ objectPosition: event.imagePosition }} />
         <span className="event-arrow" aria-hidden="true">↗</span>
       </div>
       <div className="event-date"><strong>{day}</strong><span>{month}</span></div>
